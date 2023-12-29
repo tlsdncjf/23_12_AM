@@ -22,6 +22,7 @@ public class Main {
 			if (cmd.equals("exit")) {
 				break;
 			}
+
 			if (cmd.equals("article write")) {
 				System.out.println("==게시글 작성==");
 				int id = lastArticleId + 1;
@@ -29,7 +30,7 @@ public class Main {
 				String title = sc.nextLine();
 				System.out.print("내용 : ");
 				String body = sc.nextLine();
-				
+
 				Article article = new Article(id, title, body);
 				articles.add(article);
 //				System.out.println(title + " / " + body);
@@ -47,42 +48,68 @@ public class Main {
 						System.out.printf("  %4d  /   %s  \n", article.getId(), article.getTitle());
 					}
 				}
+			} else if (cmd.startsWith("article detail ")) {
+
+				String[] cmdDiv = cmd.split(" ");
+				System.out.println(cmdDiv[0]);
+				System.out.println(cmdDiv[1]);
+				System.out.println(cmdDiv[2]);
+
+				int id = 0;
+				try {
+					id = Integer.parseInt(cmdDiv[2]);
+				} catch (Exception e) {
+					System.out.println("번호는 정수로 입력해");
+					continue;
+
+				}
+
+				System.out.printf("%d번 게시글은 없습니다.\n", id);
 			} else {
 				System.out.println("사용할 수 없는 명령어입니다");
 			}
+
 		}
 		System.out.println("== 프로그램 끝 == ");
 
 		sc.close();
 	}
 }
+
 class Article {
-	int id;
-	String title;
-	String body;
+	private int id;
+	private String title;
+	private String body;
+
 	public Article(int id, String title, String body) {
 		this.id = id;
 		this.title = title;
 		this.body = body;
-		
+
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getBody() {
 		return body;
 	}
+
 	public void setBody(String body) {
 		this.body = body;
 	}
-	
+
 }
