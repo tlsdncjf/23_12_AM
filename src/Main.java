@@ -48,12 +48,9 @@ public class Main {
 						System.out.printf("  %4d  /   %s  \n", article.getId(), article.getTitle());
 					}
 				}
-			} else if (cmd.startsWith("article detail ")) {
+			} else if (cmd.startsWith("article detail")) {
 
 				String[] cmdDiv = cmd.split(" ");
-				System.out.println(cmdDiv[0]);
-				System.out.println(cmdDiv[1]);
-				System.out.println(cmdDiv[2]);
 
 				int id = 0;
 				try {
@@ -63,8 +60,22 @@ public class Main {
 					continue;
 
 				}
+				boolean found = false;
 
-				System.out.printf("%d번 게시글은 없습니다.\n", id);
+				for (int i = 0; i < articles.size(); i++) {
+					Article article = articles.get(i);
+					if (article.getId() == id) {
+						found = true;
+						break;
+					}
+				}
+
+				if (found == false) {
+					System.out.printf("%d번 게시글은 없습니다\n", id);
+				} else {
+					System.out.println("너 찾는거 있더라");
+				}
+
 			} else {
 				System.out.println("사용할 수 없는 명령어입니다");
 			}
