@@ -3,13 +3,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+	static List<Article> articles = new ArrayList<>();
+
 	public static void main(String[] args) {
+
 		System.out.println("== 프로그램 시작 == ");
+
+		makeTestData();
 
 		Scanner sc = new Scanner(System.in);
 
-		int lastArticleId = 0;
-		List<Article> articles = new ArrayList<>();
+		int lastArticleId = 3;
+
 		while (true) {
 			System.out.print("명령어 > ");
 			String cmd = sc.nextLine().trim();
@@ -33,7 +38,7 @@ public class Main {
 				System.out.print("내용 : ");
 				String body = sc.nextLine();
 
-				Article article = new Article(id, regDate, updateDate, title, body, 0);
+				Article article = new Article(id, regDate, updateDate, title, body);
 				articles.add(article);
 //				System.out.println(title + " / " + body);
 
@@ -169,6 +174,14 @@ public class Main {
 
 		sc.close();
 	}
+
+	private static void makeTestData() {
+		System.out.println("테스트를 위한 데이터를 생성합니다.");
+		articles.add(new Article(1, "2023-12-12 12:12:12", Util.getNowDate_TimeStr(), "제목1", "내용1", 11));
+		articles.add(new Article(2, "2024-01-01 12:12:12", Util.getNowDate_TimeStr(), "제목2", "내용2", 22));
+		articles.add(new Article(3, Util.getNowDate_TimeStr(), Util.getNowDate_TimeStr(), "제목3", "내용3", 33));
+	}
+
 }
 
 class Article {
@@ -178,6 +191,10 @@ class Article {
 	private String title;
 	private String body;
 	private int hit;
+
+	public Article(int id, String regDate, String updateDate, String title, String body) {
+		this(id, regDate, updateDate, title, body, 0);
+	}
 
 	public Article(int id, String regDate, String updateDate, String title, String body, int hit) {
 		this.id = id;
