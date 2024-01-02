@@ -46,9 +46,21 @@ public class Main {
 					}
 					break;
 				}
+				String loginPw = null;
 
-				System.out.print("로그인 비밀번호 : ");
-				String loginPw = sc.nextLine();
+				while (true) {
+					System.out.print("로그인 비밀번호 : ");
+					loginPw = sc.nextLine();
+					System.out.print("로그인 비밀번호 확인: ");
+					String loginPwConfirm = sc.nextLine();
+
+					if (loginPw.equals(loginPwConfirm) == false) {
+						System.out.println("비밀번호 다시 확인해");
+						continue;
+					}
+					break;
+				}
+				
 				System.out.print("이름 : ");
 				String name = sc.nextLine();
 
@@ -220,10 +232,10 @@ public class Main {
 
 		return true;
 	}
+	
 
 	private static Article getArticleById(int id) {
-		for (int i = 0; i < articles.size(); i++) {
-			Article article = articles.get(i);
+		for (Article article : articles) {
 			if (article.getId() == id) {
 				return article;
 			}
