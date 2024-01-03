@@ -1,14 +1,24 @@
+package com.koreaIT.java.AM;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
-	static List<Article> articles = new ArrayList<>();
-	static List<Member> members = new ArrayList<>();
+import com.koreaIT.java.AM.dto.Article;
+import com.koreaIT.java.AM.dto.Member;
+import com.koreaIT.java.AM.util.Util;
 
-	public static void main(String[] args) {
+public class App {
 
+	List<Article> articles;
+	List<Member> members;
+
+	public App() {
+		articles = new ArrayList<>();
+		members = new ArrayList<>();
+	}
+
+	public void run() {
 		System.out.println("== 프로그램 시작 == ");
 
 		makeTestData();
@@ -16,8 +26,7 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 
 		int lastArticleId = 3;
-
-		int lastmemberId = 0;
+		int lastMemberId = 0;
 
 		while (true) {
 			System.out.print("명령어 > ");
@@ -31,10 +40,9 @@ public class Main {
 			if (cmd.equals("exit")) {
 				break;
 			}
-
 			if (cmd.equals("member join")) {
 				System.out.println("==회원 가입==");
-				int id = lastmemberId + 1;
+				int id = lastMemberId + 1;
 				String regDate = Util.getNowDate_TimeStr();
 				String loginId = null;
 				while (true) {
@@ -60,15 +68,15 @@ public class Main {
 					}
 					break;
 				}
-				
+
 				System.out.print("이름 : ");
 				String name = sc.nextLine();
 
 				Member member = new Member(id, regDate, loginId, loginPw, name);
 				members.add(member);
-				System.out.printf("%d번 회원이 가입되었습니다. %s님 환영합니다.\n", id, name);
-				lastmemberId++;
 
+				System.out.printf("%d번 회원이 가입 되었습니다. %s님 환영합니다.\n", id, name);
+				lastMemberId++;
 			} else if (cmd.equals("article write")) {
 				System.out.println("==게시글 작성==");
 				int id = lastArticleId + 1;
@@ -123,19 +131,18 @@ public class Main {
 					}
 
 				}
-			} else if (cmd.startsWith("article detail"))
 
-			{
+			} else if (cmd.startsWith("article detail")) {
 
 				String[] cmdDiv = cmd.split(" ");
 
 				int id = 0;
+
 				try {
 					id = Integer.parseInt(cmdDiv[2]);
 				} catch (Exception e) {
 					System.out.println("번호는 정수로 입력해");
 					continue;
-
 				}
 
 				Article foundArticle = getArticleById(id);
@@ -158,14 +165,16 @@ public class Main {
 				String[] cmdDiv = cmd.split(" ");
 
 				int id = 0;
+
 				try {
 					id = Integer.parseInt(cmdDiv[2]);
 				} catch (Exception e) {
 					System.out.println("번호는 정수로 입력해");
 					continue;
-
 				}
+
 				Article foundArticle = getArticleById(id);
+
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시글은 없습니다\n", id);
 					continue;
@@ -186,15 +195,7 @@ public class Main {
 					continue;
 				}
 
-				Article foundArticle = null;
-
-				for (int i = 0; i < articles.size(); i++) {
-					Article article = articles.get(i);
-					if (article.getId() == id) {
-						foundArticle = article;
-						break;
-					}
-				}
+				Article foundArticle = getArticleById(id);
 
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시글은 없습니다\n", id);
@@ -212,18 +213,18 @@ public class Main {
 				foundArticle.setTitle(newTitle);
 				foundArticle.setBody(newBody);
 				System.out.println(id + "번 글이 수정되었습니다.");
-
 			} else {
 				System.out.println("사용할 수 없는 명령어입니다");
 			}
-
 		}
+
 		System.out.println("== 프로그램 끝 == ");
 
 		sc.close();
+
 	}
 
-	private static boolean isJoinableLoginId(String loginId) {
+	private boolean isJoinableLoginId(String loginId) {
 		for (Member member : members) {
 			if (member.getLoginId().equals(loginId)) {
 				return false;
@@ -232,9 +233,8 @@ public class Main {
 
 		return true;
 	}
-	
 
-	private static Article getArticleById(int id) {
+	private Article getArticleById(int id) {
 		for (Article article : articles) {
 			if (article.getId() == id) {
 				return article;
@@ -243,139 +243,11 @@ public class Main {
 		return null;
 	}
 
-	private static void makeTestData() {
+	private void makeTestData() {
 		System.out.println("테스트를 위한 데이터를 생성합니다.");
-		articles.add(new Article(1, "2023-12-12 12:12:12", Util.getNowDate_TimeStr(), "제목1", "내용1", 11));
+		articles.add(new Article(1, "2023-12-12 12:12:12", Util.getNowDate_TimeStr(), "제목123", "내용1", 11));
 		articles.add(new Article(2, "2024-01-01 12:12:12", Util.getNowDate_TimeStr(), "제목2", "내용2", 22));
-		articles.add(new Article(3, Util.getNowDate_TimeStr(), Util.getNowDate_TimeStr(), "제목3", "내용3", 33));
+		articles.add(new Article(3, Util.getNowDate_TimeStr(), Util.getNowDate_TimeStr(), "제목1233", "내용3", 33));
 	}
 
-}
-
-class Article {
-	private int id;
-	private String regDate;
-	private String updateDate;
-	private String title;
-	private String body;
-	private int hit;
-
-	public Article(int id, String regDate, String updateDate, String title, String body) {
-		this(id, regDate, updateDate, title, body, 0);
-	}
-
-	public Article(int id, String regDate, String updateDate, String title, String body, int hit) {
-		this.id = id;
-		this.regDate = regDate;
-		this.updateDate = updateDate;
-		this.title = title;
-		this.body = body;
-		this.hit = hit;
-
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
-	public String getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(String updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getBody() {
-		return body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
-	}
-
-	public int getHit() {
-		return hit;
-	}
-
-	public void setHit(int hit) {
-		this.hit = hit;
-	}
-
-}
-
-class Member {
-	private int id;
-	private String regDate;
-	private String loginId;
-	private String loginPw;
-	private String name;
-
-	public Member(int id, String regDate, String loginId, String loginPw, String name) {
-		this.id = id;
-		this.regDate = regDate;
-		this.loginId = loginId;
-		this.loginPw = loginPw;
-		this.name = name;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
-	public String getLoginId() {
-		return loginId;
-	}
-
-	public void setLoginId(String loginId) {
-		this.loginId = loginId;
-	}
-
-	public String getLoginPw() {
-		return loginPw;
-	}
-
-	public void setLoginPw(String loginPw) {
-		this.loginPw = loginPw;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 }
