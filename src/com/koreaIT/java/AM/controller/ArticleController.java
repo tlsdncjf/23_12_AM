@@ -12,6 +12,8 @@ public class ArticleController extends Controller {
 	private List<Article> articles;
 	private Scanner sc;
 	private String cmd;
+	
+	int lastArticleId = 3;
 
 	public ArticleController(Scanner sc) {
 		this.articles = new ArrayList<>();
@@ -43,7 +45,6 @@ public class ArticleController extends Controller {
 		}
 	}
 
-	int lastArticleId = 3;
 
 	private void doWrite() {
 		System.out.println("==게시글 작성==");
@@ -200,7 +201,7 @@ public class ArticleController extends Controller {
 	}
 
 	public void makeTestData() {
-		System.out.println("테스트를 위한 데이터를 생성합니다.");
+		System.out.println("테스트를 위한 게시글 데이터를 생성합니다.");
 		articles.add(new Article(1, "2023-12-12 12:12:12", Util.getNowDate_TimeStr(), "제목123", "내용1", 11));
 		articles.add(new Article(2, "2024-01-01 12:12:12", Util.getNowDate_TimeStr(), "제목2", "내용2", 22));
 		articles.add(new Article(3, Util.getNowDate_TimeStr(), Util.getNowDate_TimeStr(), "제목1233", "내용3", 33));
