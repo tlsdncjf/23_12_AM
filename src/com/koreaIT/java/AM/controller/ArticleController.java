@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.koreaIT.java.AM.controller.MemberController;
+import com.koreaIT.java.AM.Container;
 import com.koreaIT.java.AM.dto.Article;
+import com.koreaIT.java.AM.dto.Member;
 import com.koreaIT.java.AM.util.Util;
 
 public class ArticleController extends Controller {
@@ -13,11 +14,13 @@ public class ArticleController extends Controller {
 	private List<Article> articles;
 	private Scanner sc;
 	private String cmd;
+	
+	List<Member> members = Container.memberDao.members;
 
 	int lastArticleId = 3;
 
 	public ArticleController(Scanner sc) {
-		this.articles = new ArrayList<>();
+		this.articles = Container.articleDao.articles;
 		this.sc = sc;
 	}
 
@@ -94,18 +97,24 @@ public class ArticleController extends Controller {
 				return;
 			}
 		}
+		String writerName = null;
 
 		System.out.println("  번호  /  제목    /   작성일     /   조회");
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 			Article article = forPrintArticles.get(i);
+			
+			for (Member member : members) {
+				if (article.getMemberId() == member.getId()) {
+					writerName = member.getName();
+					break;
+				}
+			}
 			if (Util.getNowDate_TimeStr().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
-				System.out.printf("  %4d  /   %5s    /     %d   /   %s    /   %d\n", article.getId(),
-						article.getRegDate().split(" ")[1], article.getMemberId(), article.getTitle(),
-						article.getHit());
+				System.out.printf("  %4d  /   %5s    /     %s   /   %s    /   %d\n", article.getId(),
+						article.getRegDate().split(" ")[1], writerName, article.getTitle(), article.getHit());
 			} else {
-				System.out.printf("  %4d  /   %5s    /     %d   /   %s    /   %d\n", article.getId(),
-						article.getRegDate().split(" ")[0], article.getMemberId(), article.getTitle(),
-						article.getHit());
+				System.out.printf("  %4d  /   %5s    /     %s   /   %s    /   %d\n", article.getId(),
+						article.getRegDate().split(" ")[0], writerName, article.getTitle(), article.getHit());
 			}
 
 		}
