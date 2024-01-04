@@ -11,4 +11,5 @@ public abstract class Controller {
 	public boolean isLogined() {
 		return loginedMember != null;
 	}
+
 }
