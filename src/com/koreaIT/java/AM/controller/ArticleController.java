@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.koreaIT.java.AM.controller.MemberController;
 import com.koreaIT.java.AM.dto.Article;
 import com.koreaIT.java.AM.util.Util;
 
@@ -25,6 +26,10 @@ public class ArticleController extends Controller {
 
 		switch (actionMethodName) {
 		case "write":
+			if (isLogined() == false) {
+				System.out.println("로그인 하고 이용해");
+				break;
+			}
 			doWrite();
 			break;
 		case "list":
@@ -47,22 +52,25 @@ public class ArticleController extends Controller {
 
 
 	private void doWrite() {
-		System.out.println("==게시글 작성==");
-		int id = lastArticleId + 1;
-		String regDate = Util.getNowDate_TimeStr();
-		String updateDate = regDate;
-		System.out.print("제목 : ");
-		String title = sc.nextLine();
-		System.out.print("내용 : ");
-		String body = sc.nextLine();
+		
+			System.out.println("==게시글 작성==");
+			int id = lastArticleId + 1;
+			String regDate = Util.getNowDate_TimeStr();
+			String updateDate = regDate;
+			System.out.print("제목 : ");
+			String title = sc.nextLine();
+			System.out.print("내용 : ");
+			String body = sc.nextLine();
 
-		Article article = new Article(id, regDate, updateDate, title, body);
-		articles.add(article);
+			Article article = new Article(id, regDate, updateDate, title, body);
+			articles.add(article);
 
-		System.out.printf("%d번 글이 생성 되었습니다.\n", id);
-		lastArticleId++;
-
-	}
+			System.out.printf("%d번 글이 생성 되었습니다.\n", id);
+		
+			
+			lastArticleId++;
+		}
+	
 
 	private void showList() {
 		System.out.println("==게시글 목록==");

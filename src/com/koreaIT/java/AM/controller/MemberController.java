@@ -28,9 +28,17 @@ public class MemberController extends Controller {
 			doJoin();
 			break;
 		case "login":
+			if (isLogined()) {
+				System.out.println("이미 로그인 상태야");
+				return;
+			}
 			doLogin();
 			break;
 		case "logout":
+			if (!isLogined()) {
+				System.out.println("이미 로그아웃 상태야");
+				return;
+			}
 			doLogout();
 			break;
 		default:
@@ -39,15 +47,8 @@ public class MemberController extends Controller {
 		}
 	}
 
-	private boolean isLogined() {
-		return loginedMember != null;
-	}
-
 	private void doLogin() {
-		if (isLogined()) {
-			System.out.println("이미 로그인 상태야");
-			return;
-		}
+
 		System.out.println("==로그인==");
 		System.out.print("로그인 아이디 : ");
 		String loginId = sc.nextLine();
@@ -125,7 +126,7 @@ public class MemberController extends Controller {
 		lastMemberId++;
 
 	}
-	
+
 	private Member getMemberByLoginId(String loginId) {
 		for (Member member : members) {
 			if (member.getLoginId().equals(loginId)) {
